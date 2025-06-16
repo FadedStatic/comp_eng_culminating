@@ -101,12 +101,16 @@ back:
             for (const auto& book : librarian.books) {
                 popular_books.emplace_back(book.lease_count,book);
                 // check if author is alr there
-                if (const auto pos = std::find(popular_authors.begin(), popular_authors.end(), book.author); pos == popular_authors.end())
+                if (const auto pos = std::ranges::find_if(popular_authors, [book](const std::pair<int,std::string>& val) -> bool  {
+                    return val.second == book.author;
+                }); pos == popular_authors.end())
                     popular_authors.emplace_back(book.lease_count, book.author);
                 else
                     (pos->first)++;
 
-                if (const auto pos = std::find(popular_genres.begin(), popular_genres.end(), book.author); pos == popular_genres.end())
+                if (const auto pos = std::ranges::find_if(popular_genres, [book](const std::pair<int,std::string>& val) -> bool  {
+                    return val.second == book.genre;
+                }); pos == popular_genres.end())
                     popular_genres.emplace_back(book.lease_count, book.genre);
                 else
                     (pos->first)++;
